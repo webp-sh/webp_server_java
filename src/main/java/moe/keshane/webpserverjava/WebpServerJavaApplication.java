@@ -1,16 +1,29 @@
 package moe.keshane.webpserverjava;
 
+import com.luciad.imageio.webp.WebPWriteParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -37,19 +50,75 @@ public class WebpServerJavaApplication {
     }
 
 
-    @ResponseBody
     @RequestMapping("/**")
-    public String output(HttpServletRequest request){
+    public ResponseEntity<FileSystemResource> output(HttpServletRequest request, HttpServletResponse response){
         String uri = request.getRequestURI();
-//        String[] sarr = Arrays.stream(uri.split("/"))
-//                .filter(value -> value != null && value.length() > 0 && value!="")
-//                .toArray(size -> new String[size]);
-//        String s = String.join("/", sarr);
-        String realImagePath = config.getRealImagePath(uri);
-        return realImagePath;
+        String imageName = uri.split("/")[uri.split("/").length-1];
+        String fileExtension = uri.split("\\.")[uri.split("\\.").length-1];
+        if(!config.isAllowed(fileExtension)) throw new RuntimeException("File Not Allowed.");
+        String realImageDirectory = config.getRealImageDirectory(uri);
+        String realImagePath = Paths.get(realImageDirectory,imageName).toString();
+        String cacheDir = Paths.get(realImageDirectory,".webp").toString();
+        String webpImageName = imageName.split("\\.")[0]+".webp";
+        String cacheImagePath = Paths.get(cacheDir,webpImageName).toString();
+        if(!isExist(realImagePath)){
+            try {
+                Files.deleteIfExists(Paths.get(cacheImagePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        createDir(cacheDir);
+        if(isExist(cacheImagePath)){
+            return outputImage(cacheImagePath,"image/webp");
+        }
+        try {
+            webpEncoder(realImagePath,cacheImagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputImage(cacheImagePath,"image/webp");
     }
 
-    public boolean isImageExist(String imagePath){
-        return new File(imagePath).exists();
+    public boolean isExist(String dirPath){
+        if(Files.exists(Paths.get(dirPath),new LinkOption[]{ LinkOption.NOFOLLOW_LINKS})){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean createDir(String dirPath){
+        if(!isExist(dirPath)){
+            try {
+                Path path = Files.createDirectories(Paths.get(dirPath));
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public ResponseEntity<FileSystemResource> outputImage(String imagePath,String contentType){
+        FileSystemResource resource = new FileSystemResource(imagePath);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(resource);
+    }
+
+    public void webpEncoder(String originPath, String webpPath) throws IOException {
+        // Obtain an image to encode from somewhere
+        BufferedImage image = ImageIO.read(new File(originPath));
+        // Obtain a WebP ImageWriter instance
+        ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
+        // Configure encoding parameters
+        WebPWriteParam writeParam = new WebPWriteParam(writer.getLocale());
+        writeParam.setCompressionMode(WebPWriteParam.MODE_DEFAULT);
+        // Configure the output on the ImageWriter
+        writer.setOutput(new FileImageOutputStream(new File(webpPath)));
+        // Encode
+        writer.write(null, new IIOImage(image, null, null), writeParam);
     }
 }

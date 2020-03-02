@@ -37,17 +37,20 @@ public class Config {
         return imgMap.get(requestUri);
     }
 
-    public String getRealImagePath(String requestUri){
+    public String getRealImageDirectory(String requestUri){
         String[] splitUri = requestUri.split("/");
-        String imageName = splitUri[splitUri.length-1];
         int to = splitUri.length>2?splitUri.length - 1:2;
         String[] dPath = Arrays.copyOfRange(splitUri, 0, to);
         String requestPath = String.join("/",dPath);
-        return imgMap.get(requestPath)+"/"+imageName;
+        return imgMap.get(requestPath);
     }
 
     public String getPort(){
         return port!=0?String.valueOf(port):"8080";
+    }
+
+    public boolean isAllowed(String fileExtension){
+        return allowedTypes.indexOf(fileExtension)==-1?false:true;
     }
 
 }
