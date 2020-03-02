@@ -11,10 +11,10 @@ bootJar {
     archiveFileName = 'webp-server-java.jar'
 }
 repositories {
-    maven {
-        url 'https://maven.aliyun.com/nexus/content/groups/public'
-    }
-//    mavenCentral()
+//    maven {
+//        url 'https://maven.aliyun.com/nexus/content/groups/public'
+//    }
+    mavenCentral()
 }
 
 dependencies {
