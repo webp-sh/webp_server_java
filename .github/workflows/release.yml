@@ -30,5 +30,6 @@ jobs:
         repo_token: "${{ secrets.RELEASE_TOKEN }}"
         prerelease: false
         draft: true
+        automatic_release_tag: "latest"
         files: 
           build/libs/webp-server-java.jar
