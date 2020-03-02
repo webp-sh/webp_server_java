@@ -1,0 +1,9 @@
+{
+  "host": "127.0.0.1",
+  "port": 3333,
+  "imgMap": {
+    "/i": "/home/ubuntu/pic",
+    "/img": "/home/ubuntu/pic2"
+  },
+  "allowedTypes": ["jpg","png","jpeg","webp","gif"]
+}
