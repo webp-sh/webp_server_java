@@ -70,6 +70,13 @@ public class WebpServerJavaApplication {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
+
+        String ua = request.getHeader("user-agent");
+        if(ua.indexOf("Safari")!=-1&&ua.indexOf("Chrome")==-1&&ua.indexOf("Firefox")==-1){
+            log.info("this is safari");
+            return outputImage(realImagePath,request.getServletContext().getMimeType(new File(realImagePath).getAbsolutePath()));
+        }
+
         createDir(cacheDir);
         if(isExist(cacheImagePath)){
             return outputImage(cacheImagePath,"image/webp");
