@@ -5,7 +5,7 @@ on:
     branches:    
       - master
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -19,11 +19,6 @@ jobs:
       run: ./gradlew build
     - name: Build Jar package
       run: ./gradlew bootJar
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps: 
     - name: Release Jar package
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
@@ -31,5 +26,4 @@ jobs:
         prerelease: false
         draft: true
         automatic_release_tag: "latest"
-        files: 
-          build/libs/webp-server-java.jar
+        files: ./build/libs/webp-server-java.jar
