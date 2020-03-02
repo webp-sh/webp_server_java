@@ -23,4 +23,4 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Build Jar package
-    - run: ./gradlew bootJar
+      run: ./gradlew bootJar
