@@ -5,9 +5,11 @@ plugins {
 }
 
 group = 'moe.keshane'
-version = '0.0.1-SNAPSHOT'
+version = '0.1'
 sourceCompatibility = '1.8'
-
+bootJar {
+    archiveFileName = 'webp-server-java.jar'
+}
 repositories {
     maven {
         url 'https://maven.aliyun.com/nexus/content/groups/public'

@@ -27,12 +27,15 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * @author Keshane
+ * main class of webp server java
+ */
 @Controller
 @SpringBootApplication
 public class WebpServerJavaApplication {
     private static Config config;
     private static Logger log = LoggerFactory.getLogger(WebpServerJavaApplication.class);
-
 
     public static void main(String[] args) {
         String configPath = args[0];
@@ -89,6 +92,10 @@ public class WebpServerJavaApplication {
         return outputImage(cacheImagePath,"image/webp");
     }
 
+    /**
+     * @param dirPath directory path
+     * @return is the directory exist
+     */
     public boolean isExist(String dirPath){
         if(Files.exists(Paths.get(dirPath),new LinkOption[]{ LinkOption.NOFOLLOW_LINKS})){
             return true;
@@ -96,6 +103,10 @@ public class WebpServerJavaApplication {
         return false;
     }
 
+    /**
+     * @param dirPath directory path
+     * @return is the directory be created
+     */
     public boolean createDir(String dirPath){
         if(!isExist(dirPath)){
             try {
@@ -108,6 +119,11 @@ public class WebpServerJavaApplication {
         return false;
     }
 
+    /**
+     * @param imagePath the image file path
+     * @param contentType content-type
+     * @return the response return to user
+     */
     public ResponseEntity<FileSystemResource> outputImage(String imagePath,String contentType){
         FileSystemResource resource = new FileSystemResource(imagePath);
         return ResponseEntity.ok()
@@ -115,6 +131,11 @@ public class WebpServerJavaApplication {
                 .body(resource);
     }
 
+    /**
+     * @param originPath origin image file path
+     * @param webpPath webp image file path
+     * @throws IOException
+     */
     public void webpEncoder(String originPath, String webpPath) throws IOException {
         // Obtain an image to encode from somewhere
         BufferedImage image = ImageIO.read(new File(originPath));
