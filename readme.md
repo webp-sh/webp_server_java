@@ -1,6 +1,7 @@
 <p align="center">
 	<img src="./pics/webp_server.png"/>
 </p>
+
 ![build](https://github.com/webp-sh/webp_server_java/workflows/build/badge.svg)
 
 This is a Server based on Java, which allows you to serve WebP images on the fly. 
