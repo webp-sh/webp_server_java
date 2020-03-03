@@ -47,9 +47,15 @@ public class Config {
      */
     public String getRealImageDirectory(String requestUri){
         String[] splitUri = requestUri.split("/");
-        int to = splitUri.length>2?splitUri.length - 1:2;
+//        int to = splitUri.length>2?splitUri.length - 1:1;
+        int to = splitUri.length - 1;
         String[] dPath = Arrays.copyOfRange(splitUri, 0, to);
-        String requestPath = String.join("/",dPath);
+        String requestPath;
+        if(dPath.length == 1){
+            requestPath = "/"+dPath[0];
+        }else{
+            requestPath = String.join("/",dPath);
+        }
         return imgMap.get(requestPath);
     }
 

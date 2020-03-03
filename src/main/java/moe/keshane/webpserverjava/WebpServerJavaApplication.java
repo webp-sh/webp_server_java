@@ -15,6 +15,7 @@ import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.print.attribute.standard.Compression;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -144,6 +145,10 @@ public class WebpServerJavaApplication {
         // Configure encoding parameters
         WebPWriteParam writeParam = new WebPWriteParam(writer.getLocale());
         writeParam.setCompressionMode(WebPWriteParam.MODE_DEFAULT);
+//        writeParam.setCompressionMode(WebPWriteParam.MODE_EXPLICIT);
+//        //if compression mode set WebPWriteParam.MODE_EXPLICIT then use this
+//        writeParam.setCompressionType(writeParam.getCompressionTypes()[WebPWriteParam.LOSSY_COMPRESSION]);
+//        writeParam.setCompressionQuality(1f);
         // Configure the output on the ImageWriter
         writer.setOutput(new FileImageOutputStream(new File(webpPath)));
         // Encode

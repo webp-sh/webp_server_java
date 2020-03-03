@@ -3,7 +3,8 @@
   "port": 3333,
   "imgMap": {
     "/i": "/home/ubuntu/pic",
-    "/img": "/home/ubuntu/pic2"
+    "/img": "/home/ubuntu/pic2",
+    "/": "/home/pic1"
   },
   "allowedTypes": ["jpg","png","jpeg","webp","gif"]
 }
