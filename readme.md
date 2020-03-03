@@ -2,7 +2,8 @@
 	<img src="./pics/webp_server.png"/>
 </p>
 
-![build](https://github.com/webp-sh/webp_server_java/workflows/release/badge.svg)
+![dev](https://github.com/webp-sh/webp_server_java/workflows/dev/badge.svg)
+![release](https://github.com/webp-sh/webp_server_java/workflows/release/badge.svg)
 
 This is a Server based on Java, which allows you to serve WebP images on the fly. 
 It will convert `jpg,jpeg,png` files by default, this can be customized by editing the `config.json`.. 
