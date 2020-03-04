@@ -58,15 +58,11 @@ public class WebpServerJavaApplication {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        if(request.getServletContext().getMimeType(file.getAbsolutePath()).equals("image/webp")){
-            return outputImage(file.toString(),request.getServletContext().getMimeType(file.getAbsolutePath()));
+        if(request.getServletContext().getMimeType(file.getAbsolutePath()) == null){
+            return outputImage(file.toString(),"image/webp");
         }
-        return outputImage(file.toString(),"image/webp");
+        return outputImage(file.toString(),request.getServletContext().getMimeType(file.getAbsolutePath()));
     }
-
-//    request.getServletContext().getMimeType(new File(realImagePath).getAbsolutePath())
-//    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//            return null;
 
     /**
      * @param imagePath the image file path

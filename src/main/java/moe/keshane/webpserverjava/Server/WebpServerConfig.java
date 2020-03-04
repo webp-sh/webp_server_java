@@ -5,6 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 public class WebpServerConfig {
+    @Override
+    public String toString() {
+        return "WebpServerConfig{" +
+                "imgMap=" + imgMap +
+                ", allowedTypes=" + allowedTypes +
+                '}';
+    }
+
     public boolean isAllowed(String fileExtension){
         return allowedTypes.indexOf(fileExtension)==-1?false:true;
     }

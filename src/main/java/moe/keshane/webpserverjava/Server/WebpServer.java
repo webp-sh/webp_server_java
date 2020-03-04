@@ -1,7 +1,11 @@
 package moe.keshane.webpserverjava.Server;
 
+import moe.keshane.webpserverjava.Exception.WebpServerException;
 import moe.keshane.webpserverjava.Utils.FileUtils;
 import moe.keshane.webpserverjava.Utils.WebpUtils;
+import moe.keshane.webpserverjava.WebpServerJavaApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,12 +17,14 @@ import java.util.Map;
 
 public class WebpServer {
     private WebpServerConfig config;
+    private static Logger log = LoggerFactory.getLogger(WebpServer.class);
 
     private WebpServer(WebpServerConfig config){
         this.config = config;
     }
 
     public static WebpServer init(WebpServerConfig config){
+        log.info(config.toString());
         return new WebpServer(config);
     }
 
@@ -26,7 +32,10 @@ public class WebpServer {
         String uri = request.getRequestURI();
         String imageName = uri.split("/")[uri.split("/").length-1];
         String fileExtension = uri.split("\\.")[uri.split("\\.").length-1];
-        if(!config.isAllowed(fileExtension)) throw new RuntimeException("File Not Allowed.");
+        log.info(fileExtension);
+        if(!config.isAllowed(fileExtension)) {
+            throw new WebpServerException("File Not Allowed.");
+        }
         String realImageDirectory = config.getRealImageDirectory(uri);
         String realImagePath = Paths.get(realImageDirectory,imageName).toString();
         String cacheDir = Paths.get(realImageDirectory,".webp").toString();
