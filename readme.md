@@ -2,6 +2,7 @@
 
 ![dev](https://github.com/webp-sh/webp_server_java/workflows/dev/badge.svg)
 ![release](https://github.com/webp-sh/webp_server_java/workflows/release/badge.svg)
+![license](https://img.shields.io/github/license/webp-sh/webp_server_java)
 
 This is a Server based on Java, which allows you to serve WebP images on the fly.
 
