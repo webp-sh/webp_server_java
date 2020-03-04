@@ -2,10 +2,8 @@ package moe.keshane.webpserverjava;
 
 import moe.keshane.webpserverjava.Server.WebpServer;
 import moe.keshane.webpserverjava.Server.WebpServerConfig;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import moe.keshane.webpserverjava.Utils.FileUtils;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +12,9 @@ import org.springframework.test.context.event.annotation.BeforeTestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +26,13 @@ class WebpServerJavaApplicationTests {
     @Mock
     MockHttpServletRequest request;
 
+    static String picPath = "/home/atlas/workspace/webp-server-java/i";
+
     static WebpServer server;
     @BeforeAll
     static void initTest(){
         Map<String,String> map = new HashMap<>();
-        map.put("/","/home/atlas/workspace/webp-server-java/i");
+        map.put("/",picPath);
         List<String> li = Arrays.asList("jpg","png","webp");
         WebpServerConfig config = new WebpServerConfig(map,li);
         server = WebpServer.init(config);
@@ -62,4 +65,15 @@ class WebpServerJavaApplicationTests {
         }
     }
 
+    @AfterEach
+    void deleteWebp(){
+        for(int i=1;i<8;i++) {
+            String path = picPath+".webp/"+i+".webp";
+            try {
+                Files.deleteIfExists(Paths.get(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
