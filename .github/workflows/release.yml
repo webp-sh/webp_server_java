@@ -26,4 +26,4 @@ jobs:
         prerelease: false
         draft: true
         automatic_release_tag: "latest"
-        files: ./build/libs/webp-server-java.jar
+        files: ./build/libs/*.jar

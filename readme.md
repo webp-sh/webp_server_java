@@ -15,16 +15,16 @@ It will convert `jpg,jpeg,png` files by default, this can be customized by editi
 ## Modified from [n0vad3v/webp_server](https://github.com/n0vad3v/webp_server)
 Add a simple feature that you can config more image directory
 
-## General Usage Steps
+## Run as server
 Create a 'config.json' file
 
 If you are serving images at `https://example.com/pics/tsuki.jpg` and 
 your files are at `/var/www/image/pics/tsuki.jpg`, then `imgMap` shall be {"/pics":"/var/www/image/pics/tsuki.jpg"}.
 
-## 1. Download or build the binary
+### 1. Download or build the binary
 Download the `webp-server` from [release](https://github.com/webp-sh/webp_server_java/releases/) page.
 
-## 2. config file
+### 2. config file
 Create a `config.json` 
 ```json
 {
@@ -40,13 +40,13 @@ Create a `config.json`
 ```
 **You must provide a config file to run this server**
 
-## 3. Run
+### 3. Run
 Run this Jar package like 
 ```
 java -jar webp-server-java.jar /path/to/your/config.json
 ```
 
-### screen or tmux
+#### screen or tmux
 Use `screen` or `tmux` to avoid being terminated. Let's take `screen` for example
 ```
 screen -S webp
@@ -54,14 +54,52 @@ java -jar webp-server-java.jar /path/to/your/config.json
 ```
 (Use Ctrl-A-D to detach the `screen` with `webp-server` running.)
 
-## 4. Nginx proxy_pass
+### 4. Nginx proxy_pass
 Let Nginx to `proxy_pass http://localhost:3333/;`, and your webp-server is on-the-fly
-### WordPress example
+#### WordPress example
 ```
 location ^~ /wp-content/uploads/ {
         proxy_pass http://127.0.0.1:3333;
 }
 ```
+## Integrate into your project already exist
+You need newer version than 0.3  
+
+### 1.Download the jar package and put it in your project
+#### if you use gradle
+you can put it into `src/main/resource/libs`, and edit config filebuild.gradle to add local dependencies
+
+```
+dependencies {
+    compile fileTree(dir:'src/main/resources/libs',include:['*.jar'])
+}
+```
+#### if you use maven
+you can put it `${project.basedir}/libs`, and edit config file pom.xml to add local dependencies
+
+```
+<dependency>  
+    <groupId>moe.keshane</groupId>  
+    <artifactId>webp-server-java</artifactId>  
+    <version>{versoin}</version>  
+    <scope>system</scope>  
+    <systemPath>${project.basedir}/libs/webp-server-java-{version}.jar</systemPath>  
+</dependency>
+```
+### 2. Initializing webp-server-java
+To initial a server you need to create a WebpServerConfig object.
+
+```
+WebpServerConfig webpConfig = new WebpServerConfig(imgMap,allowedTypes);
+WebpServer server = WebpServer.init(webpConfig);
+``` 
+
+### 3. Get webp file or origin file
+Server would return a webp image file if is not safari
+```
+File file = server.request(request);
+```
+
 ## Build your own Jar package
 Install jdk8 and clone the repo
 
