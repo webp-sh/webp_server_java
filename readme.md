@@ -1,4 +1,5 @@
-#webp-server-java
+# webp-server-java
+
 ![dev](https://github.com/webp-sh/webp_server_java/workflows/dev/badge.svg)
 ![release](https://github.com/webp-sh/webp_server_java/workflows/release/badge.svg)
 
