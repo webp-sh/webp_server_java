@@ -1,8 +1,10 @@
 # webp-server-java
 
+
 ![dev](https://github.com/webp-sh/webp_server_java/workflows/dev/badge.svg?branch=dev)
 ![release](https://github.com/webp-sh/webp_server_java/workflows/release/badge.svg?branch=master)
 ![license](https://img.shields.io/github/license/webp-sh/webp_server_java)
+[![Maven Central](https://img.shields.io/maven-central/v/moe.keshane/webp-server-java.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22moe.keshane%22%20AND%20a:%22webp-server-java%22)
 
 This is a Server based on Java, which allows you to serve WebP images on the fly.
 
