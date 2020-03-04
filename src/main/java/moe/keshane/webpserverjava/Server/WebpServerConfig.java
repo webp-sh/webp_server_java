@@ -26,6 +26,17 @@ public class WebpServerConfig {
         this.allowedTypes = allowedTypes;
     }
 
+    public WebpServerConfig() {
+    }
+
+    public void setImgMap(Map<String, String> imgMap) {
+        this.imgMap = imgMap;
+    }
+
+    public void setAllowedTypes(List<String> allowedTypes) {
+        this.allowedTypes = allowedTypes;
+    }
+
     private Map<String,String> imgMap;
     private List<String> allowedTypes;
 

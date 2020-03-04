@@ -42,37 +42,10 @@ public class ApplicationConfig {
     }
 
     /**
-     * @param requestUri
-     * @return real image directory the request get
-     */
-    public String getRealImageDirectory(String requestUri){
-        String[] splitUri = requestUri.split("/");
-//        int to = splitUri.length>2?splitUri.length - 1:1;
-        int to = splitUri.length - 1;
-        String[] dPath = Arrays.copyOfRange(splitUri, 0, to);
-        String requestPath;
-        if(dPath.length == 1){
-            requestPath = "/"+dPath[0];
-        }else{
-            requestPath = String.join("/",dPath);
-        }
-        return imgMap.get(requestPath);
-    }
-
-    /**
      * @return the server runs on this port
      */
     public String getPort(){
         return port!=0?String.valueOf(port):"8080";
-    }
-
-    /**
-     *
-     * @param fileExtension request file extension name
-     * @return is the request be allowed
-     */
-    public boolean isAllowed(String fileExtension){
-        return allowedTypes.indexOf(fileExtension)==-1?false:true;
     }
 
 }

@@ -1,6 +1,8 @@
 package moe.keshane.webpserverjava;
 
 import com.luciad.imageio.webp.WebPWriteParam;
+import moe.keshane.webpserverjava.Server.WebpServer;
+import moe.keshane.webpserverjava.Server.WebpServerConfig;
 import moe.keshane.webpserverjava.Utils.FileUtils;
 import moe.keshane.webpserverjava.Utils.WebpUtils;
 import org.slf4j.Logger;
@@ -13,18 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 
@@ -36,6 +31,7 @@ import java.util.Collections;
 @SpringBootApplication
 public class WebpServerJavaApplication {
     private static ApplicationConfig config;
+    private static WebpServer server;
     private static Logger log = LoggerFactory.getLogger(WebpServerJavaApplication.class);
 
     public static void main(String[] args) {
@@ -43,6 +39,8 @@ public class WebpServerJavaApplication {
         log.debug(args.toString());
         try {
             config = ApplicationConfig.readConfig(configPath);
+            WebpServerConfig webpConfig = new WebpServerConfig(config.imgMap,config.allowedTypes);
+            server = WebpServer.init(webpConfig);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("config file error");
@@ -53,45 +51,22 @@ public class WebpServerJavaApplication {
         app.run(args);
     }
 
-
     @RequestMapping("/**")
     public ResponseEntity<FileSystemResource> output(HttpServletRequest request, HttpServletResponse response){
-        String uri = request.getRequestURI();
-        String imageName = uri.split("/")[uri.split("/").length-1];
-        String fileExtension = uri.split("\\.")[uri.split("\\.").length-1];
-        if(!config.isAllowed(fileExtension)) throw new RuntimeException("File Not Allowed.");
-        String realImageDirectory = config.getRealImageDirectory(uri);
-        String realImagePath = Paths.get(realImageDirectory,imageName).toString();
-        String cacheDir = Paths.get(realImageDirectory,".webp").toString();
-        String webpImageName = imageName.split("\\.")[0]+".webp";
-        String cacheImagePath = Paths.get(cacheDir,webpImageName).toString();
-        if(!FileUtils.isExist(realImagePath)){
-            try {
-                Files.deleteIfExists(Paths.get(cacheImagePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        File file = server.request(request);
+        if(file == null){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-
-        String ua = request.getHeader("user-agent");
-        if(ua.indexOf("Safari")!=-1&&ua.indexOf("Chrome")==-1&&ua.indexOf("Firefox")==-1){
-            log.info("this is safari");
-            return outputImage(realImagePath,request.getServletContext().getMimeType(new File(realImagePath).getAbsolutePath()));
+        if(request.getServletContext().getMimeType(file.getAbsolutePath()).equals("image/webp")){
+            return outputImage(file.toString(),request.getServletContext().getMimeType(file.getAbsolutePath()));
         }
-
-        FileUtils.createDir(cacheDir);
-        if(FileUtils.isExist(cacheImagePath)){
-            return outputImage(cacheImagePath,"image/webp");
-        }
-        try {
-            WebpUtils.webpEncoder(realImagePath,cacheImagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outputImage(cacheImagePath,"image/webp");
+        return outputImage(file.toString(),"image/webp");
     }
+
+//    request.getServletContext().getMimeType(new File(realImagePath).getAbsolutePath())
+//    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//            return null;
 
     /**
      * @param imagePath the image file path

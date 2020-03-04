@@ -18,7 +18,7 @@ public class WebpServer {
         this.config = config;
     }
 
-    public WebpServer init(WebpServerConfig config){
+    public static WebpServer init(WebpServerConfig config){
         return new WebpServer(config);
     }
 
