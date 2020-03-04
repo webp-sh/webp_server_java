@@ -46,9 +46,10 @@ public class WebpServer {
      */
     public File request(HttpServletRequest request){
         String uri = request.getRequestURI();
+        log.info("requestURI:"+uri);
         String imageName = uri.split("/")[uri.split("/").length-1];
         String fileExtension = uri.split("\\.")[uri.split("\\.").length-1];
-        log.info(fileExtension);
+//        log.info(fileExtension);
         if(!config.isAllowed(fileExtension)) {
             throw new WebpServerException("File Not Allowed.");
         }
