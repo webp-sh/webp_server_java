@@ -1,11 +1,11 @@
-<p align="center">
-	<img src="./pics/webp_server.png"/>
-</p>
-
+#webp-server-java
 ![dev](https://github.com/webp-sh/webp_server_java/workflows/dev/badge.svg)
 ![release](https://github.com/webp-sh/webp_server_java/workflows/release/badge.svg)
 
-This is a Server based on Java, which allows you to serve WebP images on the fly. 
+This is a Server based on Java, which allows you to serve WebP images on the fly.
+
+You can easily integrate into your project. 
+ 
 It will convert `jpg,jpeg,png` files by default, this can be customized by editing the `config.json`.. 
 
 > e.g When you visit `https://a.com/1.jpg`，it will serve as `image/webp` without changing the URL.
@@ -62,7 +62,7 @@ location ^~ /wp-content/uploads/ {
         proxy_pass http://127.0.0.1:3333;
 }
 ```
-## Integrate into your project already exist
+## Integrate into your project
 You need newer version than 0.3  
 
 ### 1.Download the jar package and put it in your project
@@ -88,15 +88,30 @@ you can put it `${project.basedir}/libs`, and edit config file pom.xml to add lo
 ```
 ### 2. Initializing webp-server-java
 To initial a server you need to create a WebpServerConfig object.
-
+Two params of WebpServerConfig are `Map<String,String> imgMap,List<String> allowedTypes`.
+`imaMap` is a map of request uri and image file path like
+```
+{
+    "/i": "/home/ubuntu/pic",
+    "/img": "/home/ubuntu/pic2",
+    "/": "/home/pic1"
+}
+```
+`allowedTypes` is a list of allowed image extension name like
+```
+["jpg","png","jpeg","webp"]
+```
 ```
 WebpServerConfig webpConfig = new WebpServerConfig(imgMap,allowedTypes);
 WebpServer server = WebpServer.init(webpConfig);
 ``` 
 
+
 ### 3. Get webp file or origin file
-Server would return a webp image file if is not safari
-```
+Server would return a webp image file if is not safari or origin image file if is safari.
+
+The param is `HttpServletRequest` object.
+``` 
 File file = server.request(request);
 ```
 
