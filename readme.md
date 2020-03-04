@@ -72,11 +72,10 @@ then
 ```
 
 
-## Related Articles(In chronological order)
+## Using project
+[qwong/j-webp](https://github.com/qwong/j-webp)
 
-* [让站点图片加载速度更快——引入 WebP Server 无缝转换图片为 WebP](https://nova.moe/re-introduce-webp-server/)
-* [记 Golang 下遇到的一回「毫无由头」的内存更改](https://await.moe/2020/02/note-about-encountered-memory-changes-for-no-reason-in-golang/)
-* [WebP Server in Rust](https://await.moe/2020/02/webp-server-in-rust/)
-* [个人网站无缝切换图片到 webp](https://www.bennythink.com/flying-webp.html)
+## License
+[Apache License 2.0](./LICENSE)
 
 
