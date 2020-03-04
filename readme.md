@@ -1,7 +1,7 @@
 # webp-server-java
 
-![dev](https://github.com/webp-sh/webp_server_java/workflows/dev/badge.svg)
-![release](https://github.com/webp-sh/webp_server_java/workflows/release/badge.svg)
+![dev](https://github.com/webp-sh/webp_server_java/workflows/dev/badge.svg?branch=dev)
+![release](https://github.com/webp-sh/webp_server_java/workflows/release/badge.svg?branch=master)
 ![license](https://img.shields.io/github/license/webp-sh/webp_server_java)
 
 This is a Server based on Java, which allows you to serve WebP images on the fly.
@@ -20,26 +20,20 @@ And you can easily integrate into your project.
 ## Integrate into your project
 You need newer version than 0.3  
 
-### 1.Download the jar package and put it in your project
-Download jar package from [release](https://github.com/webp-sh/webp_server_java/releases/) page.
-#### if you use gradle
-you can put it into `src/main/resource/libs`, and edit config filebuild.gradle to add local dependencies
+### 1.Import this package by gradle or maven
 
+#### if you use gradle
+add to `build.gralde`
 ```
-dependencies {
-    compile fileTree(dir:'src/main/resources/libs',include:['*.jar'])
-}
+implementation 'moe.keshane:webp-server-java:0.3'
 ```
 #### if you use maven
-you can put it `${project.basedir}/libs`, and edit config file pom.xml to add local dependencies
-
+add to `pom.xml`
 ```
-<dependency>  
-    <groupId>moe.keshane</groupId>  
-    <artifactId>webp-server-java</artifactId>  
-    <version>{versoin}</version>  
-    <scope>system</scope>  
-    <systemPath>${project.basedir}/libs/webp-server-java-{version}.jar</systemPath>  
+<dependency>
+  <groupId>moe.keshane</groupId>
+  <artifactId>webp-server-java</artifactId>
+  <version>0.3</version>
 </dependency>
 ```
 ### 2. Initializing webp-server-java
