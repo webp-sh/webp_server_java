@@ -26,7 +26,7 @@ class WebpServerJavaApplicationTests {
     @Mock
     MockHttpServletRequest request;
 
-    static String picPath = "/home/atlas/workspace/webp-server-java/i";
+    static String picPath = "src/test/resources/i";
 
     static WebpServer server;
     @BeforeAll
@@ -68,7 +68,7 @@ class WebpServerJavaApplicationTests {
     @AfterEach
     void deleteWebp(){
         for(int i=1;i<8;i++) {
-            String path = picPath+".webp/"+i+".webp";
+            String path = Paths.get(picPath,".webp/",String.valueOf(i)+".webp").toString();
             try {
                 Files.deleteIfExists(Paths.get(path));
             } catch (IOException e) {
