@@ -23,11 +23,27 @@ public class WebpServer {
         this.config = config;
     }
 
+    /**
+     *
+     * @param config a WebpServerConfig object
+     * @return an object of WebpServer class
+     * This method is the only way to create WebpServer object
+     */
     public static WebpServer init(WebpServerConfig config){
         log.info(config.toString());
         return new WebpServer(config);
     }
 
+    /**
+     *
+     * @param request HttpServletRequest object
+     * @return File object
+     * @throws WebpServerException if the extension name of request image will throw a WebpServerException
+     * send your request in this method and return a File object
+     * if the extension name of request image will throw a WebpServerException
+     * if browser is safari would return origin image file
+     * if not return webp image file
+     */
     public File request(HttpServletRequest request){
         String uri = request.getRequestURI();
         String imageName = uri.split("/")[uri.split("/").length-1];

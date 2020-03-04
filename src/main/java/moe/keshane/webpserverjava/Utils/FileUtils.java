@@ -6,6 +6,9 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * @author Keshane
+ */
 public class FileUtils {
     /**
      * @param dirPath directory path
