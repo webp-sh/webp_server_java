@@ -5,10 +5,10 @@ plugins {
 }
 
 group = 'moe.keshane'
-version = '0.1'
+version = '0.3'
 sourceCompatibility = '1.8'
 bootJar {
-    archiveFileName = 'webp-server-java.jar'
+//    archiveFileName = 'webp-server-java.jar'
 }
 repositories {
 //    maven {
