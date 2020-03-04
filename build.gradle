@@ -7,7 +7,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 group = 'moe.keshane'
-archivesBaseName = "webp-server-java.jar"
+archivesBaseName = "webp-server-java"
 version = '0.3'
 sourceCompatibility = '1.8'
 bootJar {
@@ -32,62 +32,4 @@ test {
     useJUnitPlatform()
 }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-artifacts {
-    archives javadocJar, sourcesJar
-}
-signing {
-    sign configurations.archives
-}
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name 'Example Application'
-                packaging 'jar'
-                // optionally artifactId can be defined here
-                description 'A server is used to output webp images on supported browsers, and can be easily integrated into existing projects.'
-                url 'https://github.com/webp-sh/webp_server_java'
-
-                scm {
-                    connection 'scm:git:git@github.com:webp-sh/webp_server_java.git'
-                    developerConnection 'scm:git:git@github.com:webp-sh/webp_server_java.git'
-                    url 'https://github.com/webp-sh/webp_server_java'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'knifec'
-                        name 'Keshane'
-                        email 'keshanechen@gmail.com'
-                    }
-                }
-            }
-        }
-    }
-}

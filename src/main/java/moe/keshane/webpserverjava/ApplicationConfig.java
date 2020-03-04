@@ -33,7 +33,7 @@ public class ApplicationConfig {
     /**
      * @param path config.json file path
      * @return This config object
-     * @throws IOException
+     * @throws IOException read file may cause IOException
      */
     public static ApplicationConfig readConfig(String path) throws IOException {
         ObjectMapper json = new ObjectMapper();

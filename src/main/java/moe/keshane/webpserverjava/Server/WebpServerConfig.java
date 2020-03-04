@@ -20,7 +20,7 @@ public class WebpServerConfig {
     /**
      *
      * @param fileExtension the file extension name of request
-     * @return
+     * @return is the file allow to request
      */
     public boolean isAllowed(String fileExtension){
         return allowedTypes.indexOf(fileExtension)==-1?false:true;
@@ -29,7 +29,7 @@ public class WebpServerConfig {
     /**
      *
      * @param requestUri the request uri like "/i/xxx.png"
-     * @return
+     * @return the real image directory of request image
      */
     public String getRealImageDirectory(String requestUri){
         String[] splitUri = requestUri.split("/");

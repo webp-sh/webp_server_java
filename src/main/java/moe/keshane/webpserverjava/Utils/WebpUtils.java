@@ -18,7 +18,7 @@ public class WebpUtils {
     /**
      * @param originPath origin image file path
      * @param webpPath webp image file path
-     * @throws IOException
+     * @throws IOException read image may cause IOException
      */
     public static void webpEncoder(String originPath, String webpPath) throws IOException {
         // Obtain an image to encode from somewhere
