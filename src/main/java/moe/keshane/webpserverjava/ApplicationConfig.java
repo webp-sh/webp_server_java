@@ -12,13 +12,13 @@ import java.util.Map;
  * @author Keshane
  * config class of webp server
  */
-public class Config {
+public class ApplicationConfig {
     public String host;
     public int port;
     public Map<String,String> imgMap;
     public List<String> allowedTypes;
 
-    public Config(){}
+    public ApplicationConfig(){}
 
     @Override
     public String toString() {
@@ -35,9 +35,9 @@ public class Config {
      * @return This config object
      * @throws IOException
      */
-    public static Config readConfig(String path) throws IOException {
+    public static ApplicationConfig readConfig(String path) throws IOException {
         ObjectMapper json = new ObjectMapper();
-        Config config = json.readValue(new File(path), Config.class);
+        ApplicationConfig config = json.readValue(new File(path), ApplicationConfig.class);
         return config;
     }
 

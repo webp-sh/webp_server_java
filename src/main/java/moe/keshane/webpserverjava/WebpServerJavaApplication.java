@@ -1,6 +1,8 @@
 package moe.keshane.webpserverjava;
 
 import com.luciad.imageio.webp.WebPWriteParam;
+import moe.keshane.webpserverjava.Utils.FileUtils;
+import moe.keshane.webpserverjava.Utils.WebpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +17,6 @@ import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
-import javax.print.attribute.standard.Compression;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -25,7 +26,6 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -35,14 +35,14 @@ import java.util.Collections;
 @Controller
 @SpringBootApplication
 public class WebpServerJavaApplication {
-    private static Config config;
+    private static ApplicationConfig config;
     private static Logger log = LoggerFactory.getLogger(WebpServerJavaApplication.class);
 
     public static void main(String[] args) {
         String configPath = args[0];
         log.debug(args.toString());
         try {
-            config = Config.readConfig(configPath);
+            config = ApplicationConfig.readConfig(configPath);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("config file error");
@@ -65,7 +65,7 @@ public class WebpServerJavaApplication {
         String cacheDir = Paths.get(realImageDirectory,".webp").toString();
         String webpImageName = imageName.split("\\.")[0]+".webp";
         String cacheImagePath = Paths.get(cacheDir,webpImageName).toString();
-        if(!isExist(realImagePath)){
+        if(!FileUtils.isExist(realImagePath)){
             try {
                 Files.deleteIfExists(Paths.get(cacheImagePath));
             } catch (IOException e) {
@@ -81,43 +81,16 @@ public class WebpServerJavaApplication {
             return outputImage(realImagePath,request.getServletContext().getMimeType(new File(realImagePath).getAbsolutePath()));
         }
 
-        createDir(cacheDir);
-        if(isExist(cacheImagePath)){
+        FileUtils.createDir(cacheDir);
+        if(FileUtils.isExist(cacheImagePath)){
             return outputImage(cacheImagePath,"image/webp");
         }
         try {
-            webpEncoder(realImagePath,cacheImagePath);
+            WebpUtils.webpEncoder(realImagePath,cacheImagePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return outputImage(cacheImagePath,"image/webp");
-    }
-
-    /**
-     * @param dirPath directory path
-     * @return is the directory exist
-     */
-    public boolean isExist(String dirPath){
-        if(Files.exists(Paths.get(dirPath),new LinkOption[]{ LinkOption.NOFOLLOW_LINKS})){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param dirPath directory path
-     * @return is the directory be created
-     */
-    public boolean createDir(String dirPath){
-        if(!isExist(dirPath)){
-            try {
-                Path path = Files.createDirectories(Paths.get(dirPath));
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
     }
 
     /**
@@ -132,26 +105,5 @@ public class WebpServerJavaApplication {
                 .body(resource);
     }
 
-    /**
-     * @param originPath origin image file path
-     * @param webpPath webp image file path
-     * @throws IOException
-     */
-    public void webpEncoder(String originPath, String webpPath) throws IOException {
-        // Obtain an image to encode from somewhere
-        BufferedImage image = ImageIO.read(new File(originPath));
-        // Obtain a WebP ImageWriter instance
-        ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
-        // Configure encoding parameters
-        WebPWriteParam writeParam = new WebPWriteParam(writer.getLocale());
-        writeParam.setCompressionMode(WebPWriteParam.MODE_DEFAULT);
-//        writeParam.setCompressionMode(WebPWriteParam.MODE_EXPLICIT);
-//        //if compression mode set WebPWriteParam.MODE_EXPLICIT then use this
-//        writeParam.setCompressionType(writeParam.getCompressionTypes()[WebPWriteParam.LOSSY_COMPRESSION]);
-//        writeParam.setCompressionQuality(1f);
-        // Configure the output on the ImageWriter
-        writer.setOutput(new FileImageOutputStream(new File(webpPath)));
-        // Encode
-        writer.write(null, new IIOImage(image, null, null), writeParam);
-    }
+
 }
