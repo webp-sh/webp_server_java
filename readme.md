@@ -40,7 +40,9 @@ add to `pom.xml`
 ```
 ### 2. Initializing webp-server-java
 To initial a server you need to create a WebpServerConfig object.
+
 Two params of WebpServerConfig are `Map<String,String> imgMap,List<String> allowedTypes`.
+
 `imaMap` is a map of request uri and image file path like
 ```
 Map<String,String> imgMap = new HashMap<>();
