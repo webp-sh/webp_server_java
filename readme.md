@@ -27,7 +27,7 @@ You need newer version than 0.3
 #### if you use gradle
 add to `build.gralde`
 ```
-implementation 'moe.keshane:webp-server-java:0.3'
+implementation 'moe.keshane:webp-server-java:0.3.1'
 ```
 #### if you use maven
 add to `pom.xml`
@@ -35,7 +35,7 @@ add to `pom.xml`
 <dependency>
   <groupId>moe.keshane</groupId>
   <artifactId>webp-server-java</artifactId>
-  <version>0.3</version>
+  <version>0.3.1</version>
 </dependency>
 ```
 ### 2. Initializing webp-server-java
