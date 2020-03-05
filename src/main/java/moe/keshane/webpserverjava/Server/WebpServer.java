@@ -56,7 +56,10 @@ public class WebpServer {
         String realImageDirectory = config.getRealImageDirectory(uri);
         String realImagePath = Paths.get(realImageDirectory,imageName).toString();
         String cacheDir = Paths.get(realImageDirectory,".webp").toString();
-        String webpImageName = imageName.split("\\.")[0]+".webp";
+        String[] f = imageName.split("\\.");
+        f[f.length-1]="webp";
+        String fileName = String.join(".",f);
+        String webpImageName = fileName;
         String cacheImagePath = Paths.get(cacheDir,webpImageName).toString();
         if(!FileUtils.isExist(realImagePath)){
             try {

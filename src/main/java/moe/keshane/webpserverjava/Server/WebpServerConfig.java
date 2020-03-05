@@ -1,5 +1,6 @@
 package moe.keshane.webpserverjava.Server;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class WebpServerConfig {
      * @return is the file allow to request
      */
     public boolean isAllowed(String fileExtension){
-        return allowedTypes.indexOf(fileExtension)==-1?false:true;
+        return allowedTypes.indexOf(fileExtension.toLowerCase())==-1?false:true;
     }
 
     /**
@@ -53,7 +54,11 @@ public class WebpServerConfig {
      */
     public WebpServerConfig(Map<String, String> imgMap, List<String> allowedTypes) {
         this.imgMap = imgMap;
-        this.allowedTypes = allowedTypes;
+        List<String> tmp = new ArrayList<>();
+        for(String i : allowedTypes){
+            tmp.add(i.toLowerCase());
+        }
+        this.allowedTypes = tmp;
     }
 
     public WebpServerConfig() {
@@ -74,7 +79,11 @@ public class WebpServerConfig {
      *                     like ["png","jpg","webp"]
      */
     public void setAllowedTypes(List<String> allowedTypes) {
-        this.allowedTypes = allowedTypes;
+        List<String> tmp = new ArrayList<>();
+        for(String i : allowedTypes){
+            tmp.add(i.toLowerCase());
+        }
+        this.allowedTypes = tmp;
     }
 
     private Map<String,String> imgMap;
