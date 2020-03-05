@@ -41,11 +41,16 @@ class WebpServerJavaApplicationTests {
     @Test
     @DisplayName("safaritest")
     void mockSafari() {
-        for(int i=1;i<8;i++){
-            Mockito.when(request.getRequestURI()).thenReturn("/"+i+".jpg");
+        File[] files = new File(picPath).listFiles();
+        for(File file : files){
+            if(file.isDirectory()){
+                continue;
+            }
+            String name = file.getName();
+            Mockito.when(request.getRequestURI()).thenReturn("/"+name);
             Mockito.when(request.getHeader("user-agent")).thenReturn("thisisSafari");
-            File file = server.request(this.request);
-            String[] f = file.toString().split("\\.");
+            File ff = server.request(this.request);
+            String[] f = ff.toString().split("\\.");
             String extensionName = f[f.length-1];
             Assertions.assertNotEquals(extensionName,"webp");
         }
@@ -54,12 +59,16 @@ class WebpServerJavaApplicationTests {
     @Test
     @DisplayName("othertest")
     void mockOther() {
-        for(int i=1;i<8;i++){
-            Mockito.when(request.getRequestURI()).thenReturn("/"+i+".jpg");
-//            request.setRequestURI(i+".jpg");
+        File[] files = new File(picPath).listFiles();
+        for(File file : files){
+            if(file.isDirectory()){
+                continue;
+            }
+            String name = file.getName();
+            Mockito.when(request.getRequestURI()).thenReturn("/"+name);
             Mockito.when(request.getHeader("user-agent")).thenReturn("thisisChrome");
-            File file = server.request(this.request);
-            String[] f = file.toString().split("\\.");
+            File ff = server.request(this.request);
+            String[] f = ff.toString().split("\\.");
             String extensionName = f[f.length-1];
             Assertions.assertEquals(extensionName,"webp");
         }
