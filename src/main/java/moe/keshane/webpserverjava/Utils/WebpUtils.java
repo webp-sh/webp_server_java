@@ -1,6 +1,7 @@
 package moe.keshane.webpserverjava.Utils;
 
 import com.luciad.imageio.webp.WebPWriteParam;
+import io.github.biezhi.webp.WebpIO;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -21,6 +22,7 @@ public class WebpUtils {
      * @throws IOException read image may cause IOException
      */
     public static void webpEncoder(String originPath, String webpPath) throws IOException {
+        /*
         // Obtain an image to encode from somewhere
         BufferedImage image = ImageIO.read(new File(originPath));
         // Obtain a WebP ImageWriter instance
@@ -36,5 +38,7 @@ public class WebpUtils {
         writer.setOutput(new FileImageOutputStream(new File(webpPath)));
         // Encode
         writer.write(null, new IIOImage(image, null, null), writeParam);
+        */
+        WebpIO.create().toWEBP(originPath, webpPath);
     }
 }

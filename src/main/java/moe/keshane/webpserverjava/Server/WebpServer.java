@@ -71,12 +71,15 @@ public class WebpServer {
         }
 
         String ua = request.getHeader("user-agent");
+        log.info("ua:"+ua);
         if(ua.indexOf("Safari")!=-1&&ua.indexOf("Chrome")==-1&&ua.indexOf("Firefox")==-1){
+            log.info("returnFile:"+realImagePath);
             return new File(realImagePath);
         }
 
         FileUtils.createDir(cacheDir);
         if(FileUtils.isExist(cacheImagePath)){
+            log.info("returnFile:"+cacheImagePath);
             return new File(cacheImagePath);
         }
         try {
@@ -84,6 +87,7 @@ public class WebpServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        log.info("returnFile:"+cacheImagePath);
         return new File(cacheImagePath);
     }
 

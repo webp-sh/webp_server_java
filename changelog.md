@@ -1,4 +1,5 @@
-
+## v0.4 2020-03-06
+* using [biezhi/webp-io](https://github.com/biezhi/webp-io) instead of [qwong/j-webp](https://github.com/qwong/j-webp)
 
 ## v0.3.1 2020-03-05
 * fix bug that lowercase and uppercase may cause allowed error

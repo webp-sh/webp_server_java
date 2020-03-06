@@ -127,7 +127,9 @@ then
 
 
 ## Using project
-[qwong/j-webp](https://github.com/qwong/j-webp)
+* [qwong/j-webp](https://github.com/qwong/j-webp)
+
+* [biezhi/webp-io](https://github.com/biezhi/webp-io)
 
 ## License
 [Apache License 2.0](./LICENSE)

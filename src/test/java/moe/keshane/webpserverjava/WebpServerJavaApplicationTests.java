@@ -6,6 +6,8 @@ import moe.keshane.webpserverjava.Utils.FileUtils;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.event.annotation.BeforeTestMethod;
@@ -23,6 +25,8 @@ import java.util.Map;
 @SpringBootTest
 class WebpServerJavaApplicationTests {
 
+    static Logger log = LoggerFactory.getLogger(WebpServerJavaApplicationTests.class);
+
     @Mock
     MockHttpServletRequest request;
 
@@ -39,7 +43,7 @@ class WebpServerJavaApplicationTests {
     }
 
     @Test
-    @DisplayName("safaritest")
+    @DisplayName("SafariTest")
     void mockSafari() {
         File[] files = new File(picPath).listFiles();
         for(File file : files){
@@ -57,7 +61,7 @@ class WebpServerJavaApplicationTests {
     }
 
     @Test
-    @DisplayName("othertest")
+    @DisplayName("OtherTest")
     void mockOther() {
         File[] files = new File(picPath).listFiles();
         for(File file : files){
@@ -68,6 +72,7 @@ class WebpServerJavaApplicationTests {
             Mockito.when(request.getRequestURI()).thenReturn("/"+name);
             Mockito.when(request.getHeader("user-agent")).thenReturn("thisisChrome");
             File ff = server.request(this.request);
+            log.info("webp file size:",ff.length());
             String[] f = ff.toString().split("\\.");
             String extensionName = f[f.length-1];
             Assertions.assertEquals(extensionName,"webp");
