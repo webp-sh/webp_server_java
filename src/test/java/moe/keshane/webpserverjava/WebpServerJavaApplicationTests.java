@@ -46,6 +46,9 @@ class WebpServerJavaApplicationTests {
     @DisplayName("SafariTest")
     void mockSafari() {
         File[] files = new File(picPath).listFiles();
+        if(files ==null){
+            return ;
+        }
         for(File file : files){
             if(file.isDirectory()){
                 continue;
@@ -64,6 +67,9 @@ class WebpServerJavaApplicationTests {
     @DisplayName("OtherTest")
     void mockOther() {
         File[] files = new File(picPath).listFiles();
+        if(files ==null){
+            return ;
+        }
         for(File file : files){
             if(file.isDirectory()){
                 continue;
